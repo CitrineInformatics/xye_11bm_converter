@@ -1,4 +1,5 @@
 from pypif.obj import *
+from pypif import pif
 
 
 def convert(files=[], chemical_formula=None, temperature_kelvin=None):
@@ -51,7 +52,7 @@ def convert(files=[], chemical_formula=None, temperature_kelvin=None):
         x.append(Scalar(value=x_y_e[0]))
         y.append(Scalar(value=x_y_e[1], uncertainty=x_y_e[2]))
 
-    two_theta = Property(name="2$\theta$", scalars=x, units='degrees')
+    two_theta = Property(name="2$\\theta$", scalars=x, units='degrees')
     intensity = Property(name="Intensity", scalars=y,
                          conditions=[Value(name="Temperature", scalars=[Scalar(value=temperature_kelvin)], units="K")])
 
@@ -62,4 +63,8 @@ def convert(files=[], chemical_formula=None, temperature_kelvin=None):
 
 
 if __name__ == "__main__":
-    convert(files=["../test_files/LuFe2O4_700Air_hold3-00059.xye"])
+    file_name = "LuFe2O4_700Air_hold3-00059.xye"
+    chem_system = convert(files=["../test_files/" + file_name], chemical_formula="NaCl", temperature_kelvin="300")
+
+    with open('../test_files/' + file_name.replace('.xye', '.json'), 'w') as fw:
+        pif.dump(chem_system, fw, indent=4)
