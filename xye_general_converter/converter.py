@@ -1,6 +1,7 @@
 from pypif.obj import ChemicalSystem
 
-def convert(files=[], important_argument=None, whatever_argument=[1.0, 1.0, 1.0], **kwargs):
+
+def convert(files=[], important_argument=None):
     """
     Convert files into a pif
     :param files: to convert
@@ -9,6 +10,14 @@ def convert(files=[], important_argument=None, whatever_argument=[1.0, 1.0, 1.0]
     :param kwargs: any other arguments
     :return: the pif produced by this conversion
     """
-    if not important_argument:
-        raise KeyError("The important_argument argument was not passed to convert")
-    return ChemicalSystem()
+    # only expecting 1 file
+    assert len(files) == 1
+
+    # Read in the whole database
+    with open(files[0], 'r') as f:
+        lines = f.readlines()
+
+    print lines
+
+if __name__ == "__main__":
+    convert(files=["../test_files/LuFe2O4_700Air_hold3-00059.xye"])
