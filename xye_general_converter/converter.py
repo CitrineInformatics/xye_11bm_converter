@@ -52,12 +52,12 @@ def convert(files=[], chemical_formula=None, temperature_kelvin=None):
         x.append(Scalar(value=x_y_e[0]))
         y.append(Scalar(value=x_y_e[1], uncertainty=x_y_e[2]))
 
-    two_theta = Property(name="2$\\theta$", scalars=x, units='degrees')
     intensity = Property(name="Intensity", scalars=y,
-                         conditions=[Value(name="Temperature", scalars=[Scalar(value=temperature_kelvin)], units="K")])
+                         conditions=[Value(name="2$\\theta$", scalars=x, units="degrees")])
+    temperature = Property(name="Temperature", scalars=[Scalar(value=temperature_kelvin)], units="K")
 
-    chem_sys.properties.append(two_theta)
     chem_sys.properties.append(intensity)
+    chem_sys.properties.append(temperature)
 
     return chem_sys
 
