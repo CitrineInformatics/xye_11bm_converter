@@ -1,7 +1,7 @@
 from pypif.obj import *
 
 
-def convert(files=[], important_argument=None):
+def convert(files=[], chemical_formula=None, temperature_kelvin=None):
     """
     Convert files into a pif
     :param files: to convert
@@ -13,8 +13,14 @@ def convert(files=[], important_argument=None):
     # only expecting 1 file
     assert len(files) == 1
 
+    if not chemical_formula:
+        raise ValueError("chemical_formula is a required argument")
+    if not temperature_kelvin:
+        raise ValueError("temperature is a required argument")
+
     chem_sys = ChemicalSystem()
     chem_sys.properties = []
+    chem_sys.chemical_formula = chemical_formula
 
     # Read in the whole database
     with open(files[0], 'r') as f:
@@ -25,10 +31,8 @@ def convert(files=[], important_argument=None):
 
     x = []
     y = []
-    e = []
 
     for line in lines:
-        print line
         x_y_e = line.split()
 
         # If length of line is not 3, skip line
@@ -45,17 +49,14 @@ def convert(files=[], important_argument=None):
         y.append(Scalar(value=x_y_e[1], uncertainty=x_y_e[2]))
 
     two_theta = Property(name="2$\theta$", scalars=x, units='degrees')
-    intensity = Property(name="Intensity", scalars=y)
+    intensity = Property(name="Intensity", scalars=y,
+                         conditions=[Value(name="Temperature", scalars=[Scalar(value=temperature_kelvin)], units="K")])
 
     chem_sys.properties.append(two_theta)
     chem_sys.properties.append(intensity)
 
+    return chem_sys
 
-
-
-    # print len(lines)
-    # print lines[2502]
-    # print lines[-1:]
 
 if __name__ == "__main__":
     convert(files=["../test_files/LuFe2O4_700Air_hold3-00059.xye"])
