@@ -3,12 +3,15 @@ from pypif.obj import *
 
 def convert(files=[], chemical_formula=None, temperature_kelvin=None):
     """
-    Convert files into a pif
-    :param files: to convert
-    :param important_argument: an important argument, must be provided
-    :param whatever_argument: a less important argument with default 1
-    :param kwargs: any other arguments
-    :return: the pif produced by this conversion
+    Get list of chemical systems by parsing a Pandat output CSV file
+
+    Args:
+        files: (list) of string .xye filenames to parse, including the (relative)path to the file.
+        chemical_formula: (str) chemical formula of sample material
+        temperature_kelvin: (str) measurement temperature in Kelvin
+
+    Returns: a pif chemical system from a single .xye file
+
     """
     # only expecting 1 file
     assert len(files) == 1
