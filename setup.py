@@ -1,18 +1,18 @@
 from setuptools import setup, find_packages
 
-setup(name='super_fun_converter',
+setup(name='xye_11bm_converter',
     version='0.0.1',
-    url='http://github.com/CitrineInformatics/citrine-python-converter-template',
-    description='This converter does something',
-    author='This converter was written by someone',
-    author_email='maxhutch@citrine.io',
+    url='https://github.com/CitrineInformatics/xye_11bm_converter',
+    description='This converter ingests .xye files generated specifically from the 11-BM beamline instrument for powder diffraction.',
+    author='Saurabh Bajaj',
+    author_email='saurabh@citrine.io',
     packages=find_packages(),
     install_requires=[
         'pypif',
     ],
     entry_points={
         'citrine.dice.converter': [
-            'super_fun = super_fun_converter.converter',
+            'xye_11bm = xye_11bm_converter.converter',
         ],
     },
 )
