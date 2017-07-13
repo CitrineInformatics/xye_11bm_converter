@@ -2,15 +2,13 @@ from pypif.obj import *
 from pypif import pif
 
 
-def convert(files=[], sample_id=None, chemical_formula=None, x_label=None, y_label=None, temperature_kelvin=None):
+def convert(files=[], sample_id=None, chemical_formula=None, temperature_kelvin=None):
     """
     Get list of chemical systems by parsing a Pandat output CSV file
 
     Args:
         files: (list) of string .xye filenames to parse, including the (relative)path to the file.
         sample_id: (str) ID of sample being measured.
-        x_label: (str) label of x-axis
-        y_label: (str) label of y-axis
         chemical_formula: (str) chemical formula of sample material.
         temperature_kelvin: (str) measurement temperature in Kelvin.
 
@@ -69,11 +67,12 @@ def convert(files=[], sample_id=None, chemical_formula=None, x_label=None, y_lab
 
 
 if __name__ == "__main__":
-    # file_name = "LuFe2O4_700Air_hold3-00059.xye"
+    file_name = "LuFe2O4_700Air_hold3-00059.xye"
     # file_name = "11bmb_2144_AA0037_YbFeO_red.xye"
     # file_name = "NOM_LuFe2O4_Ex_situ_20C-5.xye"
-    file_name = "PG3_27954-3.xye"
-    chem_system = convert(files=["../test_files/" + file_name], chemical_formula="NaCl", temperature_kelvin="300")
+    # file_name = "PG3_27954-3.xye"
+    chem_system = convert(files=["../test_files/" + file_name], sample_id="001",
+                          chemical_formula="NaCl", temperature_kelvin="300")
 
     with open('../test_files/' + file_name.replace('.xye', '.json'), 'w') as fw:
         pif.dump(chem_system, fw, indent=4)
