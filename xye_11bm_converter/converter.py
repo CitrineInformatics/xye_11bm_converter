@@ -4,7 +4,7 @@ from pypif import pif
 
 def convert(files=[], sample_id=None, chemical_formula=None, temperature_kelvin=None):
     """
-    Get list of chemical systems by parsing a Pandat output CSV file
+    Ingest .xye files from the 11-BM beamline instrument at APS
 
     Args:
         files: (list) of string .xye filenames to parse, including the (relative)path to the file.
