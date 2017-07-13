@@ -22,8 +22,6 @@ def convert(files=[], sample_id=None, chemical_formula=None, temperature_kelvin=
         raise ValueError("sample_id is a required argument")
     if not chemical_formula:
         raise ValueError("chemical_formula is a required argument")
-    if not temperature_kelvin:
-        raise ValueError("temperature is a required argument")
 
     chem_sys = ChemicalSystem()
     chem_sys.ids = [Id(name="Sample ID", value=sample_id)]
@@ -58,10 +56,11 @@ def convert(files=[], sample_id=None, chemical_formula=None, temperature_kelvin=
 
     intensity = Property(name="Intensity", scalars=y,
                          conditions=[Value(name="2$\\theta$", scalars=x, units="degrees")])
-    temperature = Property(name="Temperature", scalars=[Scalar(value=temperature_kelvin)], units="K")
-
     chem_sys.properties.append(intensity)
-    chem_sys.properties.append(temperature)
+
+    if temperature_kelvin:
+        temperature = Property(name="Temperature", scalars=[Scalar(value=temperature_kelvin)], units="K")
+        chem_sys.properties.append(temperature)
 
     return chem_sys
 
