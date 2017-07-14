@@ -32,6 +32,21 @@ def convert(files=[], sample_id=None, chemical_formula=None, temperature_kelvin=
     with open(files[0], 'r') as f:
         lines = f.readlines()
 
+    user_supplied_temp = False                      # Flag for checking if user supplied temperature or not
+    if temperature_kelvin:
+        user_supplied_temp = True
+        temperature = Property(name="Temperature", scalars=[Scalar(value=temperature_kelvin)], units="K")
+        chem_sys.properties.append(temperature)
+
+    # If user does not supply temperature, then try to parse from file
+    if not user_supplied_temp:
+        for line in lines:
+            if line[0] == "#" and "Temp" in line:
+                split_line = line.split("=")
+                temp_value = split_line[1].strip().rstrip()
+                chem_sys.properties.append(Property(name="Temperature", scalars=[Scalar(value=temp_value)], units="K"))
+                break
+
     # Remove metadata lines
     lines = [line for line in lines if line[0] not in ['/', '#', '*', "'"]]
 
@@ -58,20 +73,16 @@ def convert(files=[], sample_id=None, chemical_formula=None, temperature_kelvin=
                          conditions=[Value(name="2$\\theta$", scalars=x, units="degrees")])
     chem_sys.properties.append(intensity)
 
-    if temperature_kelvin:
-        temperature = Property(name="Temperature", scalars=[Scalar(value=temperature_kelvin)], units="K")
-        chem_sys.properties.append(temperature)
-
     return chem_sys
 
 
 if __name__ == "__main__":
-    file_name = "LuFe2O4_700Air_hold3-00059.xye"
-    # file_name = "11bmb_2144_AA0037_YbFeO_red.xye"
+    # file_name = "LuFe2O4_700Air_hold3-00059.xye"
+    file_name = "11bmb_2144_AA0037_YbFeO_red.xye"
     # file_name = "NOM_LuFe2O4_Ex_situ_20C-5.xye"
     # file_name = "PG3_27954-3.xye"
     chem_system = convert(files=["../test_files/" + file_name], sample_id="001",
-                          chemical_formula="NaCl", temperature_kelvin="300")
+                          chemical_formula="NaCl")
 
     with open('../test_files/' + file_name.replace('.xye', '.json'), 'w') as fw:
         pif.dump(chem_system, fw, indent=4)
