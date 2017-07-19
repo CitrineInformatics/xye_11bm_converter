@@ -70,7 +70,10 @@ def convert(files=[], sample_id=None, chemical_formula=None, temperature_kelvin=
         y.append(Scalar(value=x_y_e[1], uncertainty=x_y_e[2]))
 
     intensity = Property(name="Intensity", scalars=y,
-                         conditions=[Value(name="2$\\theta$", scalars=x, units="degrees")])
+                         conditions=[Value(name="2$\\theta$", scalars=x, units="degrees")],
+                         methods=[Method(instruments=
+                                         Instrument(name="11-BM", url="http://11bm.xray.aps.anl.gov/"))]
+                         )
     chem_sys.properties.append(intensity)
 
     return chem_sys
